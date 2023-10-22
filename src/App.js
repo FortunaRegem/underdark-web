@@ -1,25 +1,33 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import DungeonEntrance from './screens/dungeon/DungeonEntrance';
+import IntroScreen from './screens/intro/IntroScreen';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [isSecondScreen, setIsSecondScreen] = useState(false);
+    const [isTransitioning, setIsTransitioning] = useState(false);
+
+    const handleClick = () => {
+        setIsTransitioning(true);
+        setTimeout(() => {
+            setIsSecondScreen(true);
+            setIsTransitioning(false);
+        }, 500);
+    };
+
+    if (!isSecondScreen) {
+        return (
+            <div className={isTransitioning ? 'fade-exit-active' : 'fade-exit'}>
+                <IntroScreen onClick={handleClick} />
+            </div>
+        );
+    } else {
+        return (
+            <div className={isTransitioning ? 'fade-enter' : 'fade-enter-active'}>
+                <DungeonEntrance />
+            </div>
+        );
+    }
 }
 
 export default App;
